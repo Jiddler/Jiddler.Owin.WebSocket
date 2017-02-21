@@ -1,25 +1,20 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Jiddler.Owin.WebSocket.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Owin.WebSocket.Extensions;
 
-namespace UnitTests
-{
+namespace UnitTests {
     [TestClass]
-    public class TaskQueueTests
-    {
+    public class TaskQueueTests {
         [TestMethod]
-        public void TaskQueueSizeTest()
-        {
+        public void TaskQueueSizeTest() {
             var depth = 10;
             var taskQueue = new TaskQueue();
             var wait = true;
-            for (var i = 0; i < depth; i++)
-            {
-                taskQueue.Enqueue(t => Task.Run(() =>
-                {
-                    while(wait)
+            for (var i = 0; i < depth; i++) {
+                taskQueue.Enqueue(t => Task.Run(() => {
+                    while (wait)
                         Thread.Sleep(5);
                 }), wait);
             }
@@ -31,16 +26,13 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void TaskQueueMaxSizeTest()
-        {
+        public void TaskQueueMaxSizeTest() {
             var depth = 10;
             var taskQueue = new TaskQueue();
             taskQueue.SetMaxQueueSize(depth);
             var wait = true;
-            for (var i = 0; i < depth; i++)
-            {
-                taskQueue.Enqueue(t => Task.Run(() =>
-                {
+            for (var i = 0; i < depth; i++) {
+                taskQueue.Enqueue(t => Task.Run(() => {
                     while (wait)
                         Thread.Sleep(5);
                 }), wait);
@@ -50,7 +42,7 @@ namespace UnitTests
             var newItem = taskQueue.Enqueue(t => Task.FromResult(0), wait);
             newItem.Should().BeNull("This should exceed the max and return a null task since it was not enqueued");
             taskQueue.Size.Should().Be(depth);
-            
+
             wait = false;
             Thread.Sleep(25);
             newItem = taskQueue.Enqueue(t => Task.FromResult(0), wait);
@@ -58,16 +50,13 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void TaskQueueDrainTest()
-        {
+        public void TaskQueueDrainTest() {
             var depth = 10;
             var taskQueue = new TaskQueue();
             taskQueue.SetMaxQueueSize(depth);
             var wait = true;
-            for (var i = 0; i < depth; i++)
-            {
-                taskQueue.Enqueue(t => Task.Run(() =>
-                {
+            for (var i = 0; i < depth; i++) {
+                taskQueue.Enqueue(t => Task.Run(() => {
                     while (wait)
                         Thread.Sleep(10);
                 }), wait);

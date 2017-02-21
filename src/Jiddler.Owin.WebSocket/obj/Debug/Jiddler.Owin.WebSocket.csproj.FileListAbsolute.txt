@@ -1,0 +1,11 @@
+C:\Projects\test\Jiddler.Owin.WebSocket\src\Jiddler.Owin.WebSocket\obj\Debug\Jiddler.Owin.WebSocket.csprojResolveAssemblyReference.cache
+C:\Projects\test\Jiddler.Owin.WebSocket\src\Jiddler.Owin.WebSocket\bin\Debug\Jiddler.Owin.WebSocket.dll
+C:\Projects\test\Jiddler.Owin.WebSocket\src\Jiddler.Owin.WebSocket\bin\Debug\Jiddler.Owin.WebSocket.pdb
+C:\Projects\test\Jiddler.Owin.WebSocket\src\Jiddler.Owin.WebSocket\bin\Debug\Microsoft.Owin.dll
+C:\Projects\test\Jiddler.Owin.WebSocket\src\Jiddler.Owin.WebSocket\bin\Debug\Microsoft.Practices.ServiceLocation.dll
+C:\Projects\test\Jiddler.Owin.WebSocket\src\Jiddler.Owin.WebSocket\bin\Debug\Owin.dll
+C:\Projects\test\Jiddler.Owin.WebSocket\src\Jiddler.Owin.WebSocket\bin\Debug\Microsoft.Owin.xml
+C:\Projects\test\Jiddler.Owin.WebSocket\src\Jiddler.Owin.WebSocket\bin\Debug\Microsoft.Practices.ServiceLocation.pdb
+C:\Projects\test\Jiddler.Owin.WebSocket\src\Jiddler.Owin.WebSocket\bin\Debug\Microsoft.Practices.ServiceLocation.xml
+C:\Projects\test\Jiddler.Owin.WebSocket\src\Jiddler.Owin.WebSocket\obj\Debug\Jiddler.Owin.WebSocket.dll
+C:\Projects\test\Jiddler.Owin.WebSocket\src\Jiddler.Owin.WebSocket\obj\Debug\Jiddler.Owin.WebSocket.pdb

@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
     <metadata>
-        <id>Owin.WebSocket</id>
+        <id>Jiddler.Owin.WebSocket</id>
         <version>1.7.0</version>
-        <title>Owin.WebSocket</title>
-        <authors>Bryce Godfrey</authors>
-        <owners>Bryce Godfrey</owners>
-        <projectUrl>https://github.com/bryceg/Owin.WebSocket</projectUrl>
+        <title>Jiddler.Owin.WebSocket</title>
+        <authors>Jiddler AB</authors>
+        <owners>Jiddler AB</owners>
+        <projectUrl>https://github.com/Jiddler/Jiddler.Owin.WebSocket</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>WebSocket handler for OWIN</description>
         <dependencies>
@@ -17,6 +17,6 @@
         </dependencies>
     </metadata>
     <files>
-        <file src="..\build\Owin.WebSocket.dll" target="lib\net45\Owin.WebSocket.dll" />
+        <file src="..\build\Jiddler.Owin.WebSocket.dll" target="lib\net45\Jiddler.Owin.WebSocket.dll" />
     </files>
 </package>

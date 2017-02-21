@@ -90,11 +90,13 @@
   </Choose>
   <ItemGroup>
     <Compile Include="TaskQueueTests.cs" />
+    <Compile Include="TestConnection.cs" />
+    <Compile Include="TestResolver.cs" />
     <Compile Include="WebSocketTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Owin.WebSocket\Owin.WebSocket.csproj">
+    <ProjectReference Include="..\Jiddler.Owin.WebSocket\Jiddler.Owin.WebSocket.csproj">
       <Project>{b1d742f7-39fa-498c-b22e-1a7a61c301e7}</Project>
       <Name>Owin.WebSocket</Name>
     </ProjectReference>
