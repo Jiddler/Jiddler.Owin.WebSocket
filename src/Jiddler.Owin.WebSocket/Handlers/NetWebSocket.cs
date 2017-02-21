@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Jiddler.Owin.WebSocket.Extensions;
 
 namespace Jiddler.Owin.WebSocket.Handlers {
-    class NetWebSocket : IWebSocket {
+    internal class NetWebSocket : IWebSocket {
         private readonly TaskQueue _sendQueue;
         private readonly System.Net.WebSockets.WebSocket _webSocket;
 
@@ -28,10 +28,10 @@ namespace Jiddler.Owin.WebSocket.Handlers {
 
         public Task Send(ArraySegment<byte> data, WebSocketMessageType messageType, bool endOfMessage,
             CancellationToken cancelToken) {
-            var sendContext = new SendContext(data, endOfMessage, messageType, cancelToken);
+            var sendContext = new NetSendContext(data, endOfMessage, messageType, cancelToken);
 
             return _sendQueue.Enqueue(
-                async s => { await _webSocket.SendAsync(s.Buffer, s.Type, s.EndOfMessage, s.CancelToken); },
+                async s => { await _webSocket.SendAsync(s.Buffer, s.MessageType, s.EndOfMessage, s.CancellationToken); },
                 sendContext);
         }
 

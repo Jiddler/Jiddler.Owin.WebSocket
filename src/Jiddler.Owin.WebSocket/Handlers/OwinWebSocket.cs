@@ -16,7 +16,8 @@ namespace Jiddler.Owin.WebSocket.Handlers {
         internal const int TEXT_OP = 0x1;
         internal const int BINARY_OP = 0x2;
         internal const int CLOSE_OP = 0x8;
-        internal const int PONG = 0xA;
+        internal const int PONG_OP = 0xA;
+        internal const int PING_OP = 0x9;
 
         private readonly WebSocketSendAsync _sendAsync;
         private readonly WebSocketReceiveAsync _receiveAsync;
@@ -42,21 +43,21 @@ namespace Jiddler.Owin.WebSocket.Handlers {
             return Send(data, WebSocketMessageType.Binary, endOfMessage, cancelToken);
         }
 
-        public Task Send(ArraySegment<byte> data, WebSocketMessageType messageType, bool endOfMessage,
-            CancellationToken cancelToken) {
-            var sendContext = new SendContext(data, endOfMessage, messageType, cancelToken);
+        public Task Send(ArraySegment<byte> data, WebSocketMessageType messageType, bool endOfMessage, CancellationToken cancelToken) {
+            return Enqueue(data, MessageTypeEnumToOpCode(messageType), endOfMessage, cancelToken);
+        }
 
-            return _sendQueue.Enqueue(
-                async s => { await _sendAsync(s.Buffer, MessageTypeEnumToOpCode(s.Type), s.EndOfMessage, s.CancelToken); },
-                sendContext);
+        private Task Enqueue(ArraySegment<byte> data, int opCode, bool endOfMessage, CancellationToken cancelToken) {
+            var sendContext = new OwinSendContext(data, endOfMessage, opCode, cancelToken);
+
+            return _sendQueue.Enqueue(async s => { await _sendAsync(s.Buffer, s.OpCode, s.EndOfMessage, s.CancellationToken); }, sendContext);
         }
 
         public Task Close(WebSocketCloseStatus closeStatus, string closeDescription, CancellationToken cancelToken) {
             return _closeAsync((int) closeStatus, closeDescription, cancelToken);
         }
 
-        public async Task<Tuple<ArraySegment<byte>, WebSocketMessageType>> ReceiveMessage(byte[] buffer,
-            CancellationToken cancelToken) {
+        public async Task<Tuple<ArraySegment<byte>, WebSocketMessageType>> ReceiveMessage(byte[] buffer, CancellationToken cancelToken) {
             var count = 0;
             Tuple<int, bool, int> result;
             int opType = -1;
@@ -72,8 +73,12 @@ namespace Jiddler.Owin.WebSocket.Handlers {
                     throw new InternalBufferOverflowException("The Buffer is to small to get the Websocket Message! Increase in the Constructor!");
             } while (!result.Item2);
 
-            return new Tuple<ArraySegment<byte>, WebSocketMessageType>(new ArraySegment<byte>(buffer, 0, count),
-                MessageTypeOpCodeToEnum(opType));
+            if (opType == PING_OP) // PING
+            {
+                await Enqueue(new ArraySegment<byte>(new byte[0]), PONG_OP, true, CancellationToken.None);
+            }
+
+            return new Tuple<ArraySegment<byte>, WebSocketMessageType>(new ArraySegment<byte>(buffer, 0, count), MessageTypeOpCodeToEnum(opType));
         }
 
         private static WebSocketMessageType MessageTypeOpCodeToEnum(int messageType) {
@@ -84,7 +89,9 @@ namespace Jiddler.Owin.WebSocket.Handlers {
                     return WebSocketMessageType.Binary;
                 case CLOSE_OP:
                     return WebSocketMessageType.Close;
-                case PONG:
+                case PONG_OP:
+                    return WebSocketMessageType.Binary;
+                case PING_OP:
                     return WebSocketMessageType.Binary;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(messageType), messageType, string.Empty);
